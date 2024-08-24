@@ -1,0 +1,17 @@
+.header{
+    height: 50vh;
+    background-image: url(../img/Header.jpg);
+    background-size: 90;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+   
+}
+
+.header h1, span, hr{
+    margin: 0;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+    color: white;
+}
