@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Header from './header';
+import Header from '../components/header';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
@@ -33,7 +33,7 @@ export default function Home() {
     return (
         <div>
             <Header />
-            <div className='d-flex flex-wrap justify-content-center pizzacard'>
+            <div className='d-flex bg-tertiary flex-wrap justify-content-center pizzacard'>
                 {pizzas.map(pizza => (
                     <Card key={pizza.id} className='bg-white col-12 col-md-4 col-lg-3 m-2'>
                         <Card.Img className='p-1' variant="top" src={pizza.img} />

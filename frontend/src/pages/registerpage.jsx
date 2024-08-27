@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react'
 
 
-const Formulario = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -38,7 +38,7 @@ const Formulario = () => {
 
     <>
 
-    <h2>Register</h2>
+    <h2>Registrarse</h2>
 
     <form onSubmit={handleSubmit}>
       <div>
@@ -91,4 +91,4 @@ const Formulario = () => {
   
 };
 
-export default Formulario
+export default RegisterPage

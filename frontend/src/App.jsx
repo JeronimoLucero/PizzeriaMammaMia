@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import Navbarpizzeria from './components/navbar.jsx'
-// import Home from './components/home.jsx'
-// import Cart from './components/cart.jsx'
-import Footer from './components/footer.jsx'
-import Pizza from './components/pizza.jsx'
-// import Registerpage from './components/registerpage.jsx'
-// import LoginPage from './components/loginpage.jsx'
+import NavbarP from './components/navbar'
+import Footer from './components/footer'
+import { Routes,Route } from 'react-router-dom'
 import './App.css'
+import Home from './pages/home'
+import RegisterPage from './pages/registerpage'
+import LoginPage from './pages/loginpage'
+import Cart from './pages/cart'
+import Pizza from './pages/pizza'
+import Profile from './pages/Profile'
+import NotFound from './pages/notfound'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,35 +17,27 @@ function App() {
   return (
 
     <>
-
-      <Navbarpizzeria></Navbarpizzeria>
-
+      <NavbarP />
 
 
-      
-
-
-
-      
-
-    {/* <Home></Home> */}
-
-    <Pizza></Pizza>
-
-
-      
-
-      
+    <Routes>
+      <Route path="/" element={<Home />}></Route>
+      <Route path="/register" element={<RegisterPage />}></Route>
+      <Route path="/login" element={<LoginPage />}></Route>
+      <Route path="/cart" element={<Cart />}></Route>
+      <Route path="/pizza/p001" element={<Pizza />}></Route>
+      <Route path="/profile" element={<Profile />}></Route>
+      <Route path="*" element={<NotFound />}></Route>
 
 
 
-      <Footer></Footer>
 
+    </Routes>
 
-
+    <Footer />
 
     </>
   )
-}
+};
 
 export default App

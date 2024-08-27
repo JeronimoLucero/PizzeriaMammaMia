@@ -1,9 +1,5 @@
 import React from 'react';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPizzaSlice, faLock, faLockOpen, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 
 const total = 25000;
@@ -11,50 +7,20 @@ const Token = false;
 
 export default function navbar() {
     return (
-        <Navbar bg="dark" className='p-1' >
-
-            <Nav className='d-flex'>
-                <div className="d-flex justify-content-between">
-
-                    <div>
-                    <Navbar.Brand href="#home">
-                        <Button variant="outline-light">Pizzería Mamma mia!🍕</Button>
-                    </Navbar.Brand>
-                    
-                    <Button variant="outline-light" className='me-1'>
-                        <FontAwesomeIcon icon={faPizzaSlice} /> Home
-                    </Button>
-                    
-                    <Button variant="outline-light" className='me-1'>
-                        <FontAwesomeIcon icon={Token ? faLockOpen : faLock} />
-                        {Token ? " logout" : " login"}
-                    </Button>
-                    
-                    <Button variant="outline-light" className='me-1'>
-                        <FontAwesomeIcon icon={Token ? faLockOpen : faLock} />
-                        {Token ? " profile" : " register"}
-                    </Button>
-                    </div>
-            
-                    <div>
-                    <Button variant="primary" className=''>
-                        <FontAwesomeIcon icon={faShoppingCart} /> Total: {total.toLocaleString()}
-                    </Button>
-
+        <div>
+            <nav class="navbar py-0 navbar-expand-lg bg-dark">
+                <div class="container-fluid">
+                    <div class="navbar-nav d-flex flex-row ">
+                    <Link to="/" className="navbar-brand text-white">🍕Pizzeria Mamma mia!</Link>
+                        <Link to={Token ? "/registerpage" : "/profile"} className="nav-link text-white">{Token ? "🙍‍♂️ Registrarse" : " 🙍‍♂️ Perfil"}</Link>
+                        <Link to={Token ? "/loginpage" : "/logout"} className="nav-link text-white">{Token ? "🔑 Iniciar sesion" : "🔐 Cerrar sesion"}</Link>
                     </div>
 
-
-                    
-
-
-
-
-
+                    <Link to="/cart" className="nav-link p-1 bg-primary text-white">🛒Total: {total.toLocaleString()}</Link>
 
                 </div>
+            </nav>
+        </div>
 
-            </Nav>
-
-        </Navbar>
-    );
-}
+    )
+};
