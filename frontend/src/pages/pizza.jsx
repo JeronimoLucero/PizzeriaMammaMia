@@ -1,31 +1,12 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
+import {usePizza} from '../context/pizzacontext'
 
-export default function Pizza() {
-    const [pizza, setPizza] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/pizzas/p001`);
-                if (!response.ok) {
-                    throw new Error('Error al buscar pizza');
-                }
-                const data = await response.json();
-                setPizza(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        getData();
-    },["p001"],);
+export default function pizza() {
+    const { pizzas, loading, error } = usePizza();
+    const pizza = pizzas.find(pizza => pizza.id === pizzaId);
 
     if (loading) return <div>Cargando...</div>;
-    if (error) return <div>{error}</div>;
+    if (error) return <div>Error al cargar menú, intente nuevamente más tarde.</div>;
 
 
     return (

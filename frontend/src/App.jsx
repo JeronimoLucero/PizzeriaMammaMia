@@ -10,14 +10,19 @@ import Cart from './pages/cart'
 import Pizza from './pages/pizza'
 import Profile from './pages/Profile'
 import NotFound from './pages/notfound'
+import {CartProvider} from './context/cartcontext'
+import { PizzaProvider } from './context/pizzacontext';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
 
     <>
-      <NavbarP />
+    
+    <CartProvider>
+    <NavbarP />
+    <PizzaProvider>
+     
 
 
     <Routes>
@@ -33,8 +38,13 @@ function App() {
 
 
     </Routes>
+    </PizzaProvider>
+    </CartProvider>
 
     <Footer />
+      
+   
+
 
     </>
   )
