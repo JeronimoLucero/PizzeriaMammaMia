@@ -1,20 +1,22 @@
 import React from 'react';
 import {useCart} from '../context/cartcontext'
+import { useUser } from '../context/usercontext';
+
 
 
 export default function Cart() {
-    const { cart, removeFromCart, increaseQuantity, decreaseQuantity, calculateTotalPrice, handleCheckout } = useCart();
-
+    const { cart, removeFromCart, increaseQuantity, decreaseQuantity, calculateTotalPrice, handleCheckout, handleQuantityChange } = useCart();
+    const { isAuthenticated } = useUser();
+    
+    const formatter = new Intl.NumberFormat('es-CL', {
+        style: 'currency',
+        currency: 'CLP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
 
    
-    const handleQuantityChange = (id) => {
-        const item = cart.find(item => item.id === id);
-        if (item.quantity > 1) {
-            decreaseQuantity(id);
-        } else {
-            removeFromCart(id);
-        }
-    };
+
 
     return (
         <div className="container card p-1 mt-4">
@@ -29,7 +31,7 @@ export default function Cart() {
                             <li className="text-dark my-1" key={item.id}>
                                 <img className='mx-2' src={item.img} alt={item.name} style={{ width: '10%' }} />
                                 <span className='text-dark'>{item.name}</span>
-                                <span className='text-dark'> - ${item.price.toFixed(2)}</span>
+                                <span className='text-dark'> - {formatter.format(item.price)}</span>
                                 <span className='text-dark'> (Cantidad: {item.quantity})</span>
                                 <button 
                                     onClick={() => increaseQuantity(item.id)} 
@@ -49,7 +51,8 @@ export default function Cart() {
                     </ul>
                     <div className="cart-summary">
                         <h3>Total:{calculateTotalPrice()}</h3>
-                        <button onClick={handleCheckout} className="btn btn-dark">
+                        
+                        <button onClick={handleCheckout} className={isAuthenticated ? ("btn btn-dark") : ("btn btn-dark disabled")}>
                             Checkout
                         </button>
                     </div>

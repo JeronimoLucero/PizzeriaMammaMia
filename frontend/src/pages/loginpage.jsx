@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useUser } from '../context/usercontext';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useUser();
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -10,6 +15,10 @@ const LoginPage = () => {
   };
 
   const handleLogin = (e) => {
+
+    const token = 'auth-token';
+   
+
     e.preventDefault();
 
     if (!validateEmail(email)) {
@@ -22,6 +31,9 @@ const LoginPage = () => {
     }
 
     alert('Inicio de sesión exitoso');
+
+    login(token);
+    navigate('/');
   };
 
   return (

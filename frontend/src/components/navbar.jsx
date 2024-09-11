@@ -1,29 +1,37 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/cartcontext';
+import { useUser } from '../context/usercontext';
 
 
 
-export default function navbar() {
-    const { calculateTotalPrice } = useCart()
+export default function Navbar() {
+    const { calculateTotalPrice } = useCart();
+    const { isAuthenticated, logout } = useUser();
     const total = calculateTotalPrice();
-    const Token = false;
-    
+
     return (
-        <div>
-            <nav class="navbar py-0 navbar-expand-lg bg-dark">
-                <div class="container-fluid">
-                    <div class="navbar-nav d-flex flex-row ">
-                        <Link to="/" className="navbar-brand text-white">🍕Pizzeria Mamma mia!</Link>
-                        <Link to={Token ? "/register" : "/profile"} className="nav-link text-white">{Token ? "🙍‍♂️ Registrarse" : " 🙍‍♂️ Perfil"}</Link>
-                        <Link to={Token ? "/login" : "/logout"} className="nav-link text-white">{Token ? "🔑 Iniciar sesion" : "🔐 Cerrar sesion"}</Link>
-                    </div>
-
-                    <Link to="/cart" className="nav-link p-1 bg-primary text-white">🛒Total:{total} </Link>
-
+        <nav className="navbar py-0 navbar-expand-lg bg-dark">
+            <div className="container-fluid">
+                <div className="navbar-nav d-flex flex-row">
+                    <Link to="/" className="navbar-brand text-white">🍕 Pizzeria Mamma mia!</Link>
+                    <Link to={isAuthenticated ? "/profile" : "/register"} className="nav-link text-white">
+                        {isAuthenticated ? "🙍‍♂️ perfil" : "🙍‍♂️ registrarse"}
+                    </Link>
+                    {isAuthenticated ? (
+                        <button onClick={logout} className="nav-link text-white bg-transparent border-0">
+                            🔐 Cerrar sesión
+                        </button>
+                    ) : (
+                        <Link to="/login" className="nav-link text-white">
+                            🔑 Iniciar sesión
+                        </Link>
+                    )}
                 </div>
-            </nav>
-        </div>
+                <Link to="/cart" className="nav-link p-1 bg-primary text-white">
+                    🛒 Total: {total}
+                </Link>
+            </div>
+        </nav>
+    );
+}
 
-    )
-};

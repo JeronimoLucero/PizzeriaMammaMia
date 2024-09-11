@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 const CartContext = createContext();
 
@@ -52,6 +52,15 @@ export const CartProvider = ({ children }) => {
         return formatter.format(cart.reduce((total, item) => total + item.price * item.quantity, 0));
     };
 
+    const handleQuantityChange = (id) => {
+        const item = cart.find(item => item.id === id);
+        if (item.quantity > 1) {
+            decreaseQuantity(id);
+        } else {
+            removeFromCart(id);
+        }
+    };
+
     const handleCheckout = () => {
         alert('Redirigiendo a checkout...');
     };
@@ -65,6 +74,7 @@ export const CartProvider = ({ children }) => {
                 increaseQuantity,
                 decreaseQuantity,
                 calculateTotalPrice,
+                handleQuantityChange,
                 handleCheckout,
             }}
         >

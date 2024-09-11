@@ -25,7 +25,7 @@ export const PizzaProvider = ({ children }) => {
         };
 
         getData();
-    },);
+    }, []);
 
     return (
         <PizzaContext.Provider value={{ pizzas, loading, error }}>
