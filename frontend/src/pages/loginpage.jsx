@@ -2,44 +2,40 @@ import { useState } from 'react';
 import { useUser } from '../context/usercontext';
 import { useNavigate } from 'react-router-dom';
 
-
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useUser();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { validarLogin } = useUser();
   const navigate = useNavigate();
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email.toLowerCase());
-  };
-
-  const handleLogin = (e) => {
-
-    const token = 'auth-token';
-   
-
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setErrorMessage('');
 
-    if (!validateEmail(email)) {
-      alert('Por favor, ingrese un email valido');
-      return;
+    try {
+      const data = await validarLogin(email, password);
+      if (data && data.token) {
+        navigate('/'); 
+      } else {
+        setErrorMessage('Inicio de sesión fallido. Intente de nuevo.');
+      }
+      setEmail('');
+      setPassword('');
+    } catch (error) {
+      setErrorMessage(error.message || 'Error en el proceso de inicio de sesión.');
+    } finally {
+      setLoading(false);
     }
-    if (password.length < 6) {
-      alert('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
-
-    alert('Inicio de sesión exitoso');
-
-    login(token);
-    navigate('/');
   };
 
   return (
     <>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+      {errorMessage && <p style={{ color: 'red' }} aria-live="assertive">{errorMessage}</p>}
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -48,7 +44,9 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            aria-describedby="emailHelp"
           />
+          
         </div>
         <div>
           <label htmlFor="password">Password</label>
@@ -60,7 +58,9 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </>
   );

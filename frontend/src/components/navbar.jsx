@@ -6,7 +6,7 @@ import { useUser } from '../context/usercontext';
 
 export default function Navbar() {
     const { calculateTotalPrice } = useCart();
-    const { isAuthenticated, logout } = useUser();
+    const { token , logout } = useUser();
     const total = calculateTotalPrice();
 
     return (
@@ -14,10 +14,10 @@ export default function Navbar() {
             <div className="container-fluid">
                 <div className="navbar-nav d-flex flex-row">
                     <Link to="/" className="navbar-brand text-white">🍕 Pizzeria Mamma mia!</Link>
-                    <Link to={isAuthenticated ? "/profile" : "/register"} className="nav-link text-white">
-                        {isAuthenticated ? "🙍‍♂️ perfil" : "🙍‍♂️ registrarse"}
+                    <Link to={token ? "/profile" : "/register"} className="nav-link text-white">
+                        {token ? "🙍‍♂️ perfil" : "🙍‍♂️ registrarse"}
                     </Link>
-                    {isAuthenticated ? (
+                    {token ? (
                         <button onClick={logout} className="nav-link text-white bg-transparent border-0">
                             🔐 Cerrar sesión
                         </button>

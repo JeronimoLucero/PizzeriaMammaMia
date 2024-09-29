@@ -1,93 +1,80 @@
-import {useState} from 'react'
-
+import { useState } from 'react';
+import { useUser } from '../context/usercontext'; 
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const { validarRegister, message } = useUser();
+  const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
 
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (password !== confirmPassword) {
+      setErrorMessage('Las contraseñas no coinciden.');
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMessage('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
 
-    return re.test(email.toLowerCase())
+    try {
+      const data = await validarRegister(email, password);
+      if (data) {
+        
+        navigate('/');
+      }
+    } catch (error) {
+      setErrorMessage(error.message || 'Error en el registro.');
+    }
   };
 
-  const handleSubmit = (e)=> {
-    e.preventDefault()
-
-    if (!validateEmail(email)) {
-      alert('Por favor, Ingrese un email valido')
-      return
-    }
-    if(password.length < 6) {
-      alert('La contraseña debe tener al menos 6 caracteres')
-      return
-    }
-    if(password !== confirmPassword){
-      alert('Las contraseñas no coinciden')
-      return
-    }
-    
-    alert('Formulario llenado con exito')
-  }
-
-
-  return(
-
+  return (
     <>
-
-    <h2>Registrarse</h2>
-
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor='email'>Email</label>
-        <input
-        type="email"
-        id="email"
-         value ={email}
-        onChange={(e)=>setEmail(e.target.value)}
-        required>
-        </input>
-      </div>
-
-      <div>
-        <label htmlFor="password">Password</label>
-        <input
-        type="password"
-        id="password"
-         value={password}
-         onChange={(e)=>setPassword(e.target.value)}
-        required>
-        </input>
-      </div>
-
-      <div>
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-        type="password"
-        id="confirmPassword"
-         value={confirmPassword}
-         onChange={(e)=>setConfirmPassword(e.target.value)}
-        required>
-        </input>
-      </div>
-      <button type="submit">Enviar</button>
-
-
-      
-    </form>
-
-
-
-
-
-
+      <h2>Registrarse</h2>
+      {errorMessage && <p style={{ color: 'red' }} aria-live="assertive">{errorMessage}</p>}
+      {message && <p style={{ color: 'green' }}>{message}</p>}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor='email'>Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Registrarse</button>
+      </form>
     </>
-
-
-  )
-  
+  );
 };
 
-export default RegisterPage
+export default RegisterPage;
+

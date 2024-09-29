@@ -49,7 +49,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const calculateTotalPrice = () => {
-        return formatter.format(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+        return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
 
     const handleQuantityChange = (id) => {
@@ -61,8 +61,8 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    const handleCheckout = () => {
-        alert('Redirigiendo a checkout...');
+    const clearCart = () => {
+        setCart([]);
     };
 
     return (
@@ -75,7 +75,8 @@ export const CartProvider = ({ children }) => {
                 decreaseQuantity,
                 calculateTotalPrice,
                 handleQuantityChange,
-                handleCheckout,
+                clearCart,
+                
             }}
         >
             {children}
@@ -83,5 +84,4 @@ export const CartProvider = ({ children }) => {
     );
 };
 
-
-export const useCart = () => useContext(CartContext)
+export const useCart = () => useContext(CartContext);
